@@ -3,9 +3,13 @@
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
+  "engines": {
+    "node": "6.9.4"
+  }
   "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:ngc": "ionic-app-scripts ngc",
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
