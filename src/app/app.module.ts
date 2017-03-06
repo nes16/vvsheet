@@ -5,6 +5,8 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SheetSrv } from '../providers/sheet';
+
 
 @NgModule({
   declarations: [
@@ -25,6 +27,10 @@ import { TabsPage } from '../pages/tabs/tabs';
     HomePage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    {provide:'GAPI_ENDPOINT', useValue:'https://sheets.googleapis.com/v4/spreadsheets'},
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    SheetSrv
+    ]
 })
 export class AppModule {}
