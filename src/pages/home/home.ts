@@ -47,6 +47,7 @@ export class HomePage  {
   }
 
   idChange(evt){
+    console.log('in id change')
     if(this.orNames)
       this.sheetsrv.getSheetsName(this.sheetId, this.orNames);
   }

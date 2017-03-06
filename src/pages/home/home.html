@@ -34,7 +34,7 @@
           <ion-label>
             Sheet Id
           </ion-label>
-          <ion-input type='text' formControlName="sheetId" [(ngModel)]="sheetId"></ion-input>
+          <ion-input (input)="idChange($event)" type='text' formControlName="sheetId" [(ngModel)]="sheetId"></ion-input>
         </ion-item>
         <ion-item (click)="onNameClick($event)">
           <ion-label>
