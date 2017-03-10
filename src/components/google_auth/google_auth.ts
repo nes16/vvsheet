@@ -39,6 +39,10 @@ export class GoogleAuth {
     meta1.content = 'https://www.googleapis.com/auth/spreadsheets';
     document.getElementsByTagName('head')[0].appendChild(meta1);
 
+    let meta2 = document.createElement('meta');
+    meta2.name = 'google-signin-ux_mode';
+    meta2.content = 'redirect';
+    document.getElementsByTagName('head')[0].appendChild(meta2);
     let node = document.createElement('script');
     node.src = 'https://apis.google.com/js/platform.js?onload=onLoadGoogleAPI';
     node.type = 'text/javascript';
