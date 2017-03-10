@@ -43,6 +43,12 @@ export class GoogleAuth {
     meta2.name = 'google-signin-ux_mode';
     meta2.content = 'redirect';
     document.getElementsByTagName('head')[0].appendChild(meta2);
+
+    let meta3 = document.createElement('meta');
+    meta3.name = 'google-signin-redirect_uri';
+    meta3.content = 'http://vvsheet.com/index.html';
+    document.getElementsByTagName('head')[0].appendChild(meta3);
+   
     let node = document.createElement('script');
     node.src = 'https://apis.google.com/js/platform.js?onload=onLoadGoogleAPI';
     node.type = 'text/javascript';
