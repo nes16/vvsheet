@@ -10,8 +10,8 @@ import { Observable, Observer } from 'rxjs';
 })
 export class HomePage  {
 
-  sheetId:string;//'1DexCOXWk1nOsN3n935LghtppIP1EY24JUWQrwY8euH4';
-  name:string='Senthil Ratnam';
+  sheetId:string;
+  name:string='';
 
   date:string;
   distance:number=10;
@@ -57,7 +57,8 @@ export class HomePage  {
     let range = this.name+'!'+this.sheetsrv.getCell(this.date.toString(), this.wotype);
     this.sheetsrv.putValue(this.sheetId, range, this.distance.toString()).subscribe(res => {
       console.log('Log submitter successfully-', res)
-      this.sheetsrv.setValue(this.sheetId, this.name);
+      this.sheetsrv.setValue(this.sheetId, this.name, this.date, this.wotype, this.distance);
+      alert('successfully save log in timesheet');
     }, err=>{
       console.log('Error while logging - ', err)
     }, () => {

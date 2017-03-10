@@ -2,6 +2,16 @@ import { Injectable, Inject } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Observable, Observer } from 'rxjs';
 declare let gapi: any;
+interface woDB{ sheets:{[id:string]: {
+        [name:string]:{
+            [date:string]:{
+                wo:number;
+                dist:number;
+            }[];
+        };
+    }
+} 
+}
 
 @Injectable()
 export class SheetSrv {
@@ -10,14 +20,20 @@ export class SheetSrv {
   static wouts: string[] = ['Running', 'Cycling', 'Swimming']
 
   sheetId: string;
+  db:woDB;
   constructor(public http: Http, @Inject('GAPI_ENDPOINT') public apiEndpoint: string) {
-
+    let db1 = localStorage.getItem('woDB');
+    if(db1){
+      this.db = JSON.parse(db1);
+    }
+    else
+      this.db = {sheets:{}};
   }
 
   isAuthenticated() {
     return true;
   }
-  isAuthenticated1() {
+  isAuthenticated3() {
     if (gapi.auth2) {
       console.log('Signin auth2 initialized');
       var auth = gapi.auth2.getAuthInstance();
@@ -42,105 +58,8 @@ export class SheetSrv {
     this.sheetId = id;
   }
 
-  /*
-  sample sheet:Copy of Daily Workouts -2017.xls
-  
-  api key:
-  AIzaSyARmiRY0FLh3HY8i_FL8sn9932V2jVHvwE
-  
-  1DexCOXWk1nOsN3n935LghtppIP1EY24JUWQrwY8euH4
-  Senthil Ratnam!C3:C3
-  
-  GET https://sheets.googleapis.com/v4/spreadsheets/{spreadsheetId}
-  
-  https://sheets.googleapis.com/v4/spreadsheets/1DexCOXWk1nOsN3n935LghtppIP1EY24JUWQrwY8euH4/values/Senthil%20Ratnam!C3:C3?valueInputOption=USER_ENTERED?includeValuesInResponse=true&alt=json&key=AIzaSyARmiRY0FLh3HY8i_FL8sn9932V2jVHvwE
+ 
 
-  https://content-sheets.googleapis.com/v4/spreadsheets/1DexCOXWk1nOsN3n935LghtppIP1EY24JUWQrwY8euH4/values/Senthil%20Ratnam!C3%3AC3?valueInputOption=USER_ENTERED&includeValuesInResponse=true&alt=json&key=AIzaSyD-a9IF8KKYgoC3cpgS-Al7hLQDbugrDcw
-  
-  Spreadsheet
-  ===========
-  {
-    "spreadsheetId": string,
-    "properties": {
-      object(SpreadsheetProperties)
-    },
-    "sheets": [
-      {
-        object(Sheet)
-      }
-    ],
-    "namedRanges": [
-      {
-        object(NamedRange)
-      }
-    ],
-    "spreadsheetUrl": string,
-  }
-  
-  Sheet:
-  ======
-  {
-    "properties": {
-      object(SheetProperties)
-    },
-    "data": [
-      {
-        object(GridData)
-      }
-    ],
-    "merges": [
-      {
-        object(GridRange)
-      }
-    ],
-    "conditionalFormats": [
-      {
-        object(ConditionalFormatRule)
-      }
-    ],
-    "filterViews": [
-      {
-        object(FilterView)
-      }
-    ],
-    "protectedRanges": [
-      {
-        object(ProtectedRange)
-      }
-    ],
-    "basicFilter": {
-      object(BasicFilter)
-    },
-    "charts": [
-      {
-        object(EmbeddedChart)
-      }
-    ],
-    "bandedRanges": [
-      {
-        object(BandedRange)
-      }
-    ],
-  }
-  
-  SheetProperties:
-  ===============
-  {
-    "sheetId": number,
-    "title": string,
-    "index": number,
-    "sheetType": enum(SheetType),
-    "gridProperties": {
-      object(GridProperties)
-    },
-    "hidden": boolean,
-    "tabColor": {
-      object(Color)
-    },
-    "rightToLeft": boolean,
-  }
-  
-  */
   getSheet(sheetId: string): Observable<any> {
     let url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=AIzaSyARmiRY0FLh3HY8i_FL8sn9932V2jVHvwE`;
     return this.http.get(url);
@@ -185,9 +104,15 @@ export class SheetSrv {
     return this.http.put(url, body, options);
   }
 
-  setValue(sheetId: string, name: string) {
+  setValue(sheetId: string, name: string, date: string, woName:string, distance:number) {
     localStorage.setItem("sheetId", sheetId);
     localStorage.setItem("name", name);
+    this.db.sheets[sheetId][name][date].push({wo:this.getWoTypeId(woName), dist:distance});
+    localStorage.setItem('woDB', JSON.stringify(this.db));
+  }
+
+  getdbItems(){
+    return this.db;
   }
 
   getValue(): { name: string, sheetId: string } {
@@ -214,4 +139,33 @@ export class SheetSrv {
     }
     return charIndex;
   }
+
+  getWoTypeId(woName:string){
+    switch(woName){
+      case 'Running':
+        return 0;
+      case 'Cycling':
+        return 1;
+      case 'Swimming':
+        return 2;
+      default:
+        console.log("ERROR:Invalid workout name. Expecting 'Running or Cycling or Swimming' - " , woName);
+        return null;
+    }
+  }
+
+  getWoTypeName(woId:number){
+    switch(woId){
+      case 0:
+        return 'Running';
+      case 1:
+        return 'Cycling';
+      case 2:
+        return 'Swimming';
+      default:
+        console.log("ERROR:Invalid workout id. Expecting '0 or 1 or 2' - " , woId);
+        return null;
+    }
+  }
+  
 }

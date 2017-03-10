@@ -1,20 +1,20 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { HistoryPage } from '../pages/history/history';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SheetSrv } from '../providers/sheet';
+import { GoogleAuth } from '../components/google_auth/google_auth';
 
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    HistoryPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    GoogleAuth
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -22,8 +22,7 @@ import { SheetSrv } from '../providers/sheet';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    HistoryPage,
     HomePage,
     TabsPage
   ],
