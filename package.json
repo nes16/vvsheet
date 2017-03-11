@@ -6,6 +6,9 @@
   "engines": {
     "node": "6.9.4"
   },
+   "config": {
+    "ionic_copy": "./config/copy.config.js"
+  },
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "postinstall": "ionic-app-scripts build --prod",
