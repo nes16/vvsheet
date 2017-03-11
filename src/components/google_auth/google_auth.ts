@@ -4,7 +4,7 @@ declare let window:any;
 
 @Component({
   selector: 'google-auth-ng2',
-  template: '<span *ngIf="authenticated">Welcome {{name}}</span><button id="googleSignInButton" (click)="onAuthClick($event)" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></button>'
+  template: '<span *ngIf="authenticated">Welcome {{name}}</span><button id="googleSignInButton" (click)="onAuthClick($event)" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-redirect_uri="vvsheet.com/authsuccess.html"></button>'
 })
 export class GoogleAuth {
  initAPI: Promise<any>;
@@ -44,10 +44,10 @@ export class GoogleAuth {
     meta2.content = 'redirect';
     document.getElementsByTagName('head')[0].appendChild(meta2);
 
-    // let meta3 = document.createElement('meta');
-    // meta3.name = 'google-signin-redirect_uri';
-    // meta3.content = 'http://vvsheet.com/index.html';
-    // document.getElementsByTagName('head')[0].appendChild(meta3);
+    let meta3 = document.createElement('meta');
+    meta3.name = 'google-signin-redirect_uri';
+    meta3.content = 'https://vvtimesheet.herokuapp.com/authsuccess.html';
+    document.getElementsByTagName('head')[0].appendChild(meta3);
    
     let node = document.createElement('script');
     node.src = 'https://apis.google.com/js/platform.js?onload=onLoadGoogleAPI';
